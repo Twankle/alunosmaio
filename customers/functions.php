@@ -8,42 +8,20 @@ $customer = null;
  */
 function index() {
 	global $customers;
-	$customers = find_all('usuarios');
+	$customers = find_all('customers');
 }
-
-
 /**
  *  Cadastro de Clientes
  */
 function add() {
-  if (!empty($_POST['usuarios'])) {
+  if (!empty($_POST['customer'])) {
 
     $today =
       date_create('now', new DateTimeZone('America/Sao_Paulo'));
-    $customer = $_POST['usuarios'];
-    $customer['modificado'] = $customer['cadastro'] = $today->format("Y-m-d H:i:s");
+    $customer = $_POST['customer'];
+    $customer['modified'] = $customer['created'] = $today->format("Y-m-d H:i:s");
 
-    save('usuarios', $customer);
-    header('location: index.php');
-  }
-}
-/**
- *	Atualizacao/Edicao de Cliente
- */
-function edit() {
-  $now = date_create('now', new DateTimeZone('America/Sao_Paulo'));
-  if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    if (isset($_POST['usuarios'])) {
-      $customer = $_POST['usuarios'];
-      $customer['modificado'] = $now->format("Y-m-d H:i:s");
-      update('usuarios', $id, $customer);
-      header('location: index.php');
-    } else {
-      global $customer;
-      $customer = find('usuario', $id);
-    }
-  } else {
+    save('customers', $customer);
     header('location: index.php');
   }
 }
@@ -52,13 +30,14 @@ function edit() {
  */
 function view($id = null) {
   global $customer;
-  $customer = find('usuarios', $id);
+  $customer = find('customers', $id);
 }
+
 /**
  *  Exclusão de um Cliente
  */
 function delete($id = null) {
   global $customer;
-  $customer = remove('usuarios', $id);
+  $customer = remove('customers', $id);
   header('location: index.php');
 }
